@@ -5,50 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
     <style>
-        /* تصميم عام للموقع */
+        /* أساسية الموقع */
         body {
-            font-family: 'Amiri', serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: #2c3e50;
-            color: #ecf0f1;
-            height: 100vh;
+            background-color: #2f3640;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             overflow: hidden;
         }
         .container {
-            background-color: #34495e;
-            border-radius: 20px;
-            padding: 30px;
             width: 100%;
             max-width: 800px;
+            padding: 30px;
+            background-color: #34495e;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
             text-align: center;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            color: #ecf0f1;
-            height: 90%;
-            overflow-y: auto;
             position: relative;
+            height: 80%;
+            overflow: hidden;
         }
         h1 {
             font-size: 36px;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        .menu-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 35px;
             color: #ecf0f1;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 10;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
-
-        /* تصميم القائمة الجانبية */
+        .question {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        .choices button {
+            background-color: #3498db;
+            padding: 15px;
+            margin: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .choices button:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        /* قائمة جانبية */
         .side-menu {
             position: fixed;
             top: 0;
@@ -57,9 +66,8 @@
             height: 100%;
             background-color: #2c3e50;
             padding: 20px;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            z-index: 1000;
         }
         .side-menu a {
             color: #ecf0f1;
@@ -74,114 +82,128 @@
             transition: background 0.3s ease;
         }
         .side-menu a:hover {
-            background-color: #3498db;
-        }
-
-        /* إعدادات الأزرار */
-        .choices button {
-            background-color: #3498db;
-            padding: 15px;
-            margin: 15px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.3s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .choices button:hover {
             background-color: #2980b9;
-            transform: scale(1.05);
         }
 
-        .question {
-            font-size: 26px;
-            margin-bottom: 20px;
+        /* تأثير التحولات على الأسئلة */
+        .question-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
-
-        /* تصميم النتيجة */
-        .result, .error {
-            font-size: 24px;
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+        .question-container.active {
+            display: block;
+            opacity: 1;
         }
-
-        .result {
-            background-color: #27ae60;
-            color: white;
-        }
-        .error {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        /* تصميم زر "إعادة الاختبار" */
-        .end button {
-            padding: 15px 25px;
-            background-color: #2ecc71;
-            font-size: 18px;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .end button:hover {
-            background-color: #27ae60;
-        }
-
     </style>
 </head>
 <body>
+    <!-- قائمة جانبية -->
+    <div class="side-menu" id="sideMenu">
+        <a href="#" onclick="startQuiz('aqeeda')">اختبار العقيدة</a>
+        <a href="#" onclick="startQuiz('fiqh')">اختبار الفقه</a>
+        <a href="#" onclick="startQuiz('hadith')">اختبار الحديث</a>
+        <a href="#" onclick="startQuiz('history')">اختبار التاريخ</a>
+    </div>
+
     <!-- زر القائمة الجانبية -->
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-    <!-- القائمة الجانبية -->
-    <div class="side-menu" id="sideMenu">
-        <a href="#" onclick="loadQuiz('aqeeda')">اختبار العقيدة</a>
-        <a href="#" onclick="loadQuiz('fiqh')">اختبار الفقه</a>
-        <a href="#" onclick="loadQuiz('hadith')">اختبار الحديث</a>
-        <a href="#" onclick="loadQuiz('history')">اختبار التاريخ الإسلامي</a>
-    </div>
 
     <!-- المحتوى الرئيسي -->
     <div class="container">
         <h1>اختبار المناصرين</h1>
-        <div id="quiz"></div>
-        <div id="result"></div>
+        <div id="quizContainer"></div>
     </div>
 
     <script>
         let currentQuestionIndex = 0;
         let score = 0;
         let currentQuizType = '';
-
+        
         const quizzes = {
             aqeeda: [
                 { question: "ما هو تعريف التوحيد؟", choices: ["عبادة الله وحده", "أن الله هو الخالق فقط", "توحيد العبادة فقط"], answer: "عبادة الله وحده" },
                 { question: "ما هو الكفر؟", choices: ["عدم الإيمان بالله", "إنكار وجود الله", "الإيمان بالله مع الشرك"], answer: "إنكار وجود الله" },
-                { question: "من هو الذي أسس مذهب السلف؟", choices: ["الإمام مالك", "الإمام أحمد بن حنبل", "الإمام الشافعي"], answer: "الإمام أحمد بن حنبل" },
-                { question: "ما هي حقيقة الإيمان؟", choices: ["القول باللسان", "العمل بالجوارح", "القول والاعتقاد والعمل"], answer: "القول والاعتقاد والعمل" },
-                { question: "من هو أول من أظهر التوحيد في مكة؟", choices: ["النبي محمد صلى الله عليه وسلم", "علي بن أبي طالب", "أبو بكر الصديق"], answer: "النبي محمد صلى الله عليه وسلم" }
             ],
             fiqh: [
                 { question: "ما هي الصلاة التي لا تصح إلا بالوضوء؟", choices: ["الظهر", "الفجر", "العشاء"], answer: "الفجر" },
                 { question: "ما هي الزكاة؟", choices: ["صدقة تطوعية", "فرض على المال", "هدية للفقراء"], answer: "فرض على المال" },
-                { question: "كم عدد الركعات في صلاة التراويح؟", choices: ["10", "12", "20"], answer: "20" },
-                { question: "ما هي صفة الوضوء؟", choices: ["غسل الأيدي والوجه فقط", "غسل الأعضاء مع المسح على الرأس", "غسل الأعضاء مع التسمية"], answer: "غسل الأعضاء مع المسح على الرأس" },
-                { question: "هل يجوز قضاء الصلاة الفائتة جماعة؟", choices: ["نعم", "لا", "فقط في بعض الحالات"], answer: "لا" }
             ],
             hadith: [
                 { question: "من هو الصحابي الذي قال: 'من غشنا فليس منا'؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "النبي محمد صلى الله عليه وسلم"], answer: "النبي محمد صلى الله عليه وسلم" },
                 { question: "ما هي شروط قبول الحديث؟", choices: ["العدالة في الراوي", "التواتر", "الاعتراف بالمصدر"], answer: "العدالة في الراوي" },
-                { question: "ما هي أشهر كتب الحديث؟", choices: ["البخاري ومسلم", "الطبقات الكبرى", "السنن الكبرى"], answer: "البخاري ومسلم" },
-                { question: "من هو الذي جمع السنن الكبرى؟", choices: ["أبو داود", "الترمذي", "النسائي"], answer: "النسائي" }
             ],
             history: [
                 { question: "من هو القائد الذي فتح الأندلس؟", choices: ["طارق بن زياد", "صلاح الدين", "المعتمد بن عباد"], answer: "طارق بن زياد" },
                 { question: "متى وقعت معركة بدر؟", choices: ["2 هـ", "3 هـ", "4 هـ"], answer: "2 هـ" },
-                { question: "من هو الخليفة الذي أمر بتدوين الحديث؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان
+            ]
+        };
+
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            if (menu.style.left === '0px') {
+                menu.style.left = '-250px';
+            } else {
+                menu.style.left = '0px';
+            }
+        }
+
+        function startQuiz(quizType) {
+            currentQuizType = quizType;
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const quiz = quizzes[currentQuizType];
+            const questionContainer = document.getElementById('quizContainer');
+            questionContainer.innerHTML = ''; // تنظيف المحتوى الحالي
+            
+            if (currentQuestionIndex < quiz.length) {
+                const questionData = quiz[currentQuestionIndex];
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('question-container');
+                questionElement.classList.add('active');
+
+                let choicesHTML = '';
+                questionData.choices.forEach(choice => {
+                    choicesHTML += `<button onclick="checkAnswer('${choice}')">${choice}</button>`;
+                });
+
+                questionElement.innerHTML = `
+                    <div class="question">${questionData.question}</div>
+                    <div class="choices">${choicesHTML}</div>
+                `;
+                questionContainer.appendChild(questionElement);
+            } else {
+                showResult();
+            }
+        }
+
+        function checkAnswer(answer) {
+            const quiz = quizzes[currentQuizType];
+            const questionData = quiz[currentQuestionIndex];
+
+            if (answer === questionData.answer) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showResult() {
+            const resultContainer = document.createElement('div');
+            resultContainer.classList.add(score === 0 ? 'error' : 'result');
+            resultContainer.innerHTML = `
+                <p>تم الانتهاء من الاختبار</p>
+                <p>نتيجتك: ${score}/${quizzes[currentQuizType].length}</p>
+                <button onclick="startQuiz(currentQuizType)">إعادة الاختبار</button>
+            `;
+            document.getElementById('quizContainer').innerHTML = '';
+            document.getElementById('quizContainer').appendChild(resultContainer);
+        }
+    </script>
+</body>
+</html>
