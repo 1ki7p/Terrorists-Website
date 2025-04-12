@@ -4,221 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* إعدادات أساسية */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Amiri', serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #212529;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
         }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px;
             text-align: center;
-            position: relative;
-            height: 80%;
-            overflow: hidden;
-            display: flex;
+        }
+
+        .menu {
+            display: none;
             flex-direction: column;
             align-items: center;
-        }
-        h1 {
-            font-size: 36px;
-            color: #333;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-        }
-        .question {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .choices button {
-            background-color: #007bff;
-            padding: 15px;
-            margin: 10px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s ease;
-            width: 80%;
-            box-sizing: border-box;
-        }
-        .choices button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        .side-menu {
             position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #343a40;
+            top: 50px;
+            left: 0;
+            right: 0;
+            background-color: #333;
             padding: 20px;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            z-index: 999;
         }
-        .side-menu a {
-            color: #fff;
-            font-size: 22px;
+
+        .menu a {
+            color: white;
             text-decoration: none;
-            margin: 20px 0;
-            display: block;
-            padding: 12px 0;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
-            border-radius: 5px;
-            transition: background 0.3s ease;
+            margin: 15px 0;
+            font-size: 18px;
         }
-        .side-menu a:hover {
-            background-color: #007bff;
+
+        .menu a:hover {
+            color: #ff9800;
         }
+
         .menu-btn {
-            position: fixed;
+            position: absolute;
             top: 20px;
-            left: 20px;
-            font-size: 30px;
-            background: #007bff;
-            color: #fff;
+            right: 20px;
+            background-color: #333;
+            color: white;
             border: none;
-            border-radius: 50%;
             padding: 10px;
+            font-size: 24px;
             cursor: pointer;
-            z-index: 9999;
         }
-        .question-container {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+
+        .content {
+            padding: 20px;
+            text-align: center;
         }
-        .question-container.active {
-            display: block;
-            opacity: 1;
+
+        .question {
+            margin: 20px 0;
         }
+
+        .answer-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+        }
+
+        .answer-btn:hover {
+            background-color: #0056b3;
+        }
+
         .result {
             font-size: 24px;
             margin-top: 20px;
-        }
-        .button-container {
-            margin-top: 20px;
+            font-weight: bold;
+            color: #28a745;
         }
     </style>
 </head>
 <body>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-    <div class="side-menu" id="sideMenu">
-        <a href="#" onclick="startQuiz('aqeeda')">اختبار العقيدة</a>
-        <a href="#" onclick="startQuiz('fiqh')">اختبار الفقه</a>
-        <a href="#" onclick="startQuiz('hadith')">اختبار الحديث</a>
-        <a href="#" onclick="startQuiz('history')">اختبار التاريخ</a>
+    <div class="navbar">
+        <h1>اختبار المناصرين</h1>
     </div>
 
-    <div class="container">
-        <h1>اختبار المناصرين</h1>
-        <div id="quizContainer"></div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    
+    <div class="menu" id="menu">
+        <a href="#" onclick="loadQuiz('فقه')">قسم اختبار الفقه</a>
+        <a href="#" onclick="loadQuiz('حديث')">قسم اختبار الحديث</a>
+        <a href="#" onclick="loadQuiz('عقيدة')">قسم اختبار العقيدة</a>
+    </div>
+
+    <div class="content">
+        <div id="quiz-container"></div>
     </div>
 
     <script>
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let currentQuizType = '';
-        
-        const quizzes = {
-            aqeeda: [
-                { question: "ما هو تعريف التوحيد؟", choices: ["عبادة الله وحده", "أن الله هو الخالق فقط", "توحيد العبادة فقط"], answer: "عبادة الله وحده" },
-                { question: "ما هو الكفر؟", choices: ["عدم الإيمان بالله", "إنكار وجود الله", "الإيمان بالله مع الشرك"], answer: "إنكار وجود الله" },
-            ],
-            fiqh: [
-                { question: "ما هي الصلاة التي لا تصح إلا بالوضوء؟", choices: ["الظهر", "الفجر", "العشاء"], answer: "الفجر" },
-                { question: "ما هي الزكاة؟", choices: ["صدقة تطوعية", "فرض على المال", "هدية للفقراء"], answer: "فرض على المال" },
-            ],
-            hadith: [
-                { question: "من هو الصحابي الذي قال: 'من غشنا فليس منا'؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "النبي محمد صلى الله عليه وسلم"], answer: "النبي محمد صلى الله عليه وسلم" },
-                { question: "ما هي شروط قبول الحديث؟", choices: ["العدالة في الراوي", "التواتر", "الاعتراف بالمصدر"], answer: "العدالة في الراوي" },
-            ],
-            history: [
-                { question: "من هو القائد الذي فتح الأندلس؟", choices: ["طارق بن زياد", "صلاح الدين", "المعتمد بن عباد"], answer: "طارق بن زياد" },
-                { question: "متى وقعت معركة بدر؟", choices: ["2 هـ", "3 هـ", "4 هـ"], answer: "2 هـ" },
-            ]
-        };
-
         function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            if (menu.style.left === '0px') {
-                menu.style.left = '-250px';
-            } else {
-                menu.style.left = '0px';
-            }
+            const menu = document.getElementById('menu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function startQuiz(quizType) {
-            currentQuizType = quizType;
-            currentQuestionIndex = 0;
-            score = 0;
-            loadQuestion();
-        }
+        function loadQuiz(section) {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            let questions = [];
 
-        function loadQuestion() {
-            const quiz = quizzes[currentQuizType];
-            const questionContainer = document.getElementById('quizContainer');
-            questionContainer.innerHTML = ''; // تنظيف المحتوى الحالي
-
-            if (currentQuestionIndex < quiz.length) {
-                const questionData = quiz[currentQuestionIndex];
-                const questionElement = document.createElement('div');
-                questionElement.classList.add('question-container');
-                questionElement.classList.add('active');
-
-                let choicesHTML = '';
-                questionData.choices.forEach(choice => {
-                    choicesHTML += `<button onclick="checkAnswer('${choice}')">${choice}</button>`;
-                });
-
-                questionElement.innerHTML = `
-                    <div class="question">${questionData.question}</div>
-                    <div class="choices">${choicesHTML}</div>
-                `;
-                questionContainer.appendChild(questionElement);
-            } else {
-                showResult();
-            }
-        }
-
-        function checkAnswer(answer) {
-            const quiz = quizzes[currentQuizType];
-            const questionData = quiz[currentQuestionIndex];
-
-            if (answer === questionData.answer) {
-                score++;
+            if (section === 'فقه') {
+                questions = [
+                    { question: 'ما هو حكم الصلاة في الثوب المغسول من الحيض؟', answers: ['طاهر', 'نجس', 'مبهم'], correct: 0 },
+                    { question: 'هل يجب الوضوء بعد لمس الميت؟', answers: ['نعم', 'لا', 'أحيانًا'], correct: 1 }
+                ];
+            } else if (section === 'حديث') {
+                questions = [
+                    { question: 'من هو آخر من دخل الجنة؟', answers: ['النبي صلى الله عليه وسلم', 'المسلمون', 'الملائكة'], correct: 0 },
+                    { question: 'ما هو الحديث الصحيح؟', answers: ['الحديث الذي رواه البخاري', 'الحديث الذي رواه الترمذي', 'الحديث الذي رواه مسلم'], correct: 2 }
+                ];
+            } else if (section === 'عقيدة') {
+                questions = [
+                    { question: 'هل يؤمن المسلمون بالكتب السماوية؟', answers: ['نعم', 'لا', 'جزء فقط'], correct: 0 },
+                    { question: 'ما هو تعريف التوحيد؟', answers: ['عبادة الله وحده', 'الشرك بالله', 'توحيد المعنى'], correct: 0 }
+                ];
             }
 
-            currentQuestionIndex++;
-            loadQuestion();
-        }
+            let questionIndex = 0;
+            function showQuestion() {
+                if (questionIndex < questions.length) {
+                    const question = questions[questionIndex];
+                    quizContainer.innerHTML = `
+                        <div class="question">
+                            <p>${question.question}</p>
+                            ${question.answers.map((answer, index) => `
+                                <button class="answer-btn" onclick="checkAnswer(${index}, ${question.correct})">${answer}</button>
+                            `).join('')}
+                        </div>
+                        <div class="result" id="result"></div>
+                    `;
+                }
+            }
 
-        function showResult() {
-            const resultContainer = document.createElement('div');
-            resultContainer.classList.add(score === 0 ? 'error' : 'result');
-            resultContainer.innerHTML = `
-                <p>تم الانتهاء من الاختبار</p>
-                <p>نتيجتك: ${score}/${quizzes[currentQuizType].length}</p>
-                <button onclick="startQuiz(currentQuizType)">إعادة الاختبار</button>
-            `;
-            document.getElementById('quizContainer').appendChild(resultContainer
+            function checkAnswer(selected, correct) {
+                const result = document.getElementById('result');
+                if (selected === correct) {
+                    result.innerText = 'إجابة صحيحة';
+                    result.style.color = '#28a745';
+                } else {
+                    result.innerText = 'إجابة خاطئة';
+                    result.style.color = '#dc3545';
+                }
+
+                questionIndex++;
+                setTimeout(showQuestion, 1000); // الانتقال للسؤال التالي بعد ثانية
+            }
+
+            showQuestion();
+        }
+    </script>
+</body>
+</html>
