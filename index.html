@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* إعدادات أساسية */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #2f3640;
-            color: #fff;
+            background-color: #ecf0f1;
+            color: #2c3e50;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,7 +21,7 @@
         }
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             padding: 30px;
             background-color: #34495e;
             border-radius: 20px;
@@ -29,28 +30,32 @@
             position: relative;
             height: 80%;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
             font-size: 36px;
+            color: #fff;
             margin-bottom: 30px;
-            color: #ecf0f1;
         }
         .question {
             font-size: 26px;
             margin-bottom: 20px;
+            color: #ecf0f1;
         }
         .choices button {
             background-color: #3498db;
             padding: 15px;
-            margin: 15px;
+            margin: 10px;
             font-size: 18px;
             border: none;
             border-radius: 8px;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s ease;
-            width: 100%;
+            width: 80%;
             box-sizing: border-box;
         }
         .choices button:hover {
@@ -84,7 +89,7 @@
         .side-menu a:hover {
             background-color: #2980b9;
         }
-        /* تأثير التحولات بين الأسئلة */
+        /* التأثيرات بين الأسئلة */
         .question-container {
             display: none;
             opacity: 0;
@@ -94,9 +99,26 @@
             display: block;
             opacity: 1;
         }
+        /* الزر العلوي */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            background: #2c3e50;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
+    <!-- زر القائمة الجانبية -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
     <!-- قائمة جانبية -->
     <div class="side-menu" id="sideMenu">
         <a href="#" onclick="startQuiz('aqeeda')">اختبار العقيدة</a>
@@ -104,9 +126,6 @@
         <a href="#" onclick="startQuiz('hadith')">اختبار الحديث</a>
         <a href="#" onclick="startQuiz('history')">اختبار التاريخ</a>
     </div>
-
-    <!-- زر القائمة الجانبية -->
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
     <!-- المحتوى الرئيسي -->
     <div class="container">
@@ -198,11 +217,4 @@
             resultContainer.innerHTML = `
                 <p>تم الانتهاء من الاختبار</p>
                 <p>نتيجتك: ${score}/${quizzes[currentQuizType].length}</p>
-                <button onclick="startQuiz(currentQuizType)">إعادة الاختبار</button>
-            `;
-            document.getElementById('quizContainer').innerHTML = '';
-            document.getElementById('quizContainer').appendChild(resultContainer);
-        }
-    </script>
-</body>
-</html>
+                <button onclick="startQuiz(currentQuizType)">إ
