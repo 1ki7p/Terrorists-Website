@@ -1,135 +1,179 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Amiri', serif;
-            background-color: #fdf6f0;
-            color: #000;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
             margin: 0;
             padding: 0;
         }
-        header {
-            background-color: #222;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 28px;
-            position: relative;
-        }
-        .menu-toggle {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .sidebar {
-            position: fixed;
-            right: -250px;
-            top: 0;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            transition: 0.3s;
-            z-index: 1000;
-        }
-        .sidebar.active {
-            right: 0;
-        }
-        .sidebar h3 {
-            border-bottom: 1px solid #555;
-            padding-bottom: 10px;
-        }
-        .sidebar a {
-            color: white;
-            display: block;
-            margin: 10px 0;
-            text-decoration: none;
-        }
-        .content {
+        .container {
+            background-color: #ffffff;
+            width: 80%;
+            margin: 50px auto;
             padding: 30px;
-            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        .decorated {
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 30px;
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
         }
         .question {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            text-align: right;
         }
-        .question h4 {
-            margin-bottom: 10px;
+        .choices button {
+            margin: 10px;
+            padding: 10px;
+            width: 200px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .question label {
-            display: block;
-            margin: 8px 0;
+        .choices button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            color: green;
+        }
+        .error {
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            color: red;
         }
     </style>
-    <script>
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-    </script>
 </head>
 <body>
-    <header>
-        <span class="menu-toggle" onclick="toggleMenu()">☰</span>
-        اختبار المناصرين
-    </header>
-    <div id="sidebar" class="sidebar">
-        <h3>القائمة</h3>
-        <a href="#">قسم اختبار الفقه</a>
-    </div>
-    <div class="content">
-        <div class="decorated">بَاقِيَةٌ بِإِذْنِ اللهِ</div><div class="question">
-        <h4>ما حكم من ترك الصلاة متعمدًا؟</h4>
-        <label><input type="radio" name="q1"> يكفر كفرًا أكبر</label>
-        <label><input type="radio" name="q1"> يُذنب لكن لا يكفر</label>
-        <label><input type="radio" name="q1"> لا شيء عليه</label>
+    <div class="container">
+        <h1>اختبار المناصرين</h1>
+        <div id="quiz">
+            <!-- الأسئلة سيتم إضافتها هنا -->
+        </div>
+        <div id="result"></div>
     </div>
 
-    <div class="question">
-        <h4>ما عدد الصلوات المفروضة يوميًا؟</h4>
-        <label><input type="radio" name="q2"> خمس</label>
-        <label><input type="radio" name="q2"> ست</label>
-        <label><input type="radio" name="q2"> أربع</label>
-    </div>
+    <script>
+        // الأسئلة
+        const questions = [
+            {
+                question: "ما هو اسم نبي الله الذي ركب الفلك مع قومه؟",
+                choices: ["إبراهيم", "نوح", "موسى"],
+                answer: "نوح"
+            },
+            {
+                question: "من هو الصحابي الذي لقب بأسد الله؟",
+                choices: ["عمر بن الخطاب", "علي بن أبي طالب", "خالد بن الوليد"],
+                answer: "خالد بن الوليد"
+            },
+            {
+                question: "أين حدثت معركة بدر؟",
+                choices: ["مكة", "المدينة", "أحد"],
+                answer: "مكة"
+            },
+            {
+                question: "ما هو اسم الكتاب الذي أنزل على النبي محمد صلى الله عليه وسلم؟",
+                choices: ["التوراة", "الإنجيل", "القرآن"],
+                answer: "القرآن"
+            },
+            {
+                question: "كم كان عدد المسلمين في غزوة بدر؟",
+                choices: ["300", "1000", "313"],
+                answer: "313"
+            },
+            {
+                question: "من هو أول خليفة للمسلمين؟",
+                choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان"],
+                answer: "أبو بكر الصديق"
+            },
+            {
+                question: "ما هو اسم النبي الذي ابتلعه الحوت؟",
+                choices: ["إبراهيم", "يونس", "موسى"],
+                answer: "يونس"
+            },
+            {
+                question: "كم عدد السور في القرآن الكريم؟",
+                choices: ["100", "114", "120"],
+                answer: "114"
+            },
+            {
+                question: "من هو الذي قتل الصحابي عمرو بن الجموح؟",
+                choices: ["أبو جهل", "عبد الله بن مسعود", "أبو الحسن علي بن أبي طالب"],
+                answer: "أبو جهل"
+            },
+            {
+                question: "ما هي أول مدينة هاجر إليها النبي صلى الله عليه وسلم؟",
+                choices: ["المدينة المنورة", "مكة", "الطائف"],
+                answer: "المدينة المنورة"
+            }
+        ];
 
-    <div class="question">
-        <h4>ما هو الركن الأول من أركان الإسلام؟</h4>
-        <label><input type="radio" name="q3"> الصلاة</label>
-        <label><input type="radio" name="q3"> الزكاة</label>
-        <label><input type="radio" name="q3"> الشهادتان</label>
-    </div>
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-    <div class="question">
-        <h4>متى يبدأ وقت صلاة الفجر؟</h4>
-        <label><input type="radio" name="q4"> من منتصف الليل</label>
-        <label><input type="radio" name="q4"> من طلوع الشمس</label>
-        <label><input type="radio" name="q4"> من طلوع الفجر الصادق</label>
-    </div>
+        // دالة لعرض الأسئلة
+        function showQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                let question = questions[currentQuestionIndex];
+                let questionHTML = `
+                    <div class="question">
+                        <p>${question.question}</p>
+                    </div>
+                    <div class="choices">
+                        ${question.choices.map((choice, index) => 
+                            `<button onclick="checkAnswer('${choice}')">${choice}</button>`
+                        ).join('')}
+                    </div>
+                `;
+                document.getElementById("quiz").innerHTML = questionHTML;
+            } else {
+                showResult();
+            }
+        }
 
-    <div class="question">
-        <h4>ما حكم الصيام بدون نية؟</h4>
-        <label><input type="radio" name="q5"> لا يصح</label>
-        <label><input type="radio" name="q5"> يصح إذا نوى أثناء النهار</label>
-        <label><input type="radio" name="q5"> يصح في أي وقت</label>
-    </div>
+        // دالة للتحقق من الإجابة
+        function checkAnswer(answer) {
+            if (answer === questions[currentQuestionIndex].answer) {
+                score++;
+                document.getElementById("result").innerHTML = "<p class='result'>إجابة صحيحة!<br>النتيجة: " + score + "/" + questions.length + "</p>";
+            } else {
+                document.getElementById("result").innerHTML = "<p class='error'>إجابة خاطئة!<br>النتيجة: " + score + "/" + questions.length + "</p>";
+            }
+            currentQuestionIndex++;
+            setTimeout(showQuestion, 1000);  // التبديل للسؤال التالي بعد ثانية
+        }
 
-</div>
+        // دالة لعرض النتيجة
+        function showResult() {
+            let resultHTML = `
+                <h2>لقد انتهيت من الاختبار!</h2>
+                <p>نتيجتك: ${score} من ${questions.length}</p>
+                <button onclick="resetQuiz()">إعادة الاختبار</button>
+            `;
+            document.getElementById("quiz").innerHTML = resultHTML;
+        }
 
+        // دالة لإعادة الاختبار
+        function resetQuiz() {
+            score = 0;
+            currentQuestionIndex = 0;
+            showQuestion();
+        }
+
+        // بدء الاختبار
+        showQuestion();
+    </script>
 </body>
 </html>
