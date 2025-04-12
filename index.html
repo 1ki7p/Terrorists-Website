@@ -1,49 +1,135 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ساهد الأسطورة</title>
+    <title>اختبار المناصرين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
-
         body {
             font-family: 'Amiri', serif;
-            background-color: #f0f0f0;
-            color: #333;
-            text-align: center;
+            background-color: #fdf6f0;
+            color: #000;
             margin: 0;
             padding: 0;
         }
-        .container {
-            background-color: #ffffff;
-            width: 80%;
-            margin: 50px auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        header {
+            background-color: #222;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 28px;
+            position: relative;
         }
-        h1 {
-            font-size: 32px;
-            color: #000;
-            font-weight: bold;
+        .menu-toggle {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .sidebar {
+            position: fixed;
+            right: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+        .sidebar.active {
+            right: 0;
+        }
+        .sidebar h3 {
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
+        .sidebar a {
+            color: white;
+            display: block;
+            margin: 10px 0;
+            text-decoration: none;
+        }
+        .content {
+            padding: 30px;
+            text-align: center;
         }
         .decorated {
-            font-size: 34px;
-            color: #000;
+            font-size: 22px;
             font-weight: bold;
-            margin-top: 40px;
+            color: #000;
+            margin-bottom: 30px;
+        }
+        .question {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: right;
+        }
+        .question h4 {
+            margin-bottom: 10px;
+        }
+        .question label {
+            display: block;
+            margin: 8px 0;
         }
     </style>
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
-    <div class="decorated">
-        ﷽ <br>
-        بَاقِيَةٌ بِإِذْنِ اللهِ
+    <header>
+        <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+        اختبار المناصرين
+    </header>
+    <div id="sidebar" class="sidebar">
+        <h3>القائمة</h3>
+        <a href="#">قسم اختبار الفقه</a>
+    </div>
+    <div class="content">
+        <div class="decorated">بَاقِيَةٌ بِإِذْنِ اللهِ</div><div class="question">
+        <h4>ما حكم من ترك الصلاة متعمدًا؟</h4>
+        <label><input type="radio" name="q1"> يكفر كفرًا أكبر</label>
+        <label><input type="radio" name="q1"> يُذنب لكن لا يكفر</label>
+        <label><input type="radio" name="q1"> لا شيء عليه</label>
     </div>
 
-    <div class="container">
-        <h1>سَاهِدُ الْأُسْطُورَةِ</h1>
+    <div class="question">
+        <h4>ما عدد الصلوات المفروضة يوميًا؟</h4>
+        <label><input type="radio" name="q2"> خمس</label>
+        <label><input type="radio" name="q2"> ست</label>
+        <label><input type="radio" name="q2"> أربع</label>
     </div>
+
+    <div class="question">
+        <h4>ما هو الركن الأول من أركان الإسلام؟</h4>
+        <label><input type="radio" name="q3"> الصلاة</label>
+        <label><input type="radio" name="q3"> الزكاة</label>
+        <label><input type="radio" name="q3"> الشهادتان</label>
+    </div>
+
+    <div class="question">
+        <h4>متى يبدأ وقت صلاة الفجر؟</h4>
+        <label><input type="radio" name="q4"> من منتصف الليل</label>
+        <label><input type="radio" name="q4"> من طلوع الشمس</label>
+        <label><input type="radio" name="q4"> من طلوع الفجر الصادق</label>
+    </div>
+
+    <div class="question">
+        <h4>ما حكم الصيام بدون نية؟</h4>
+        <label><input type="radio" name="q5"> لا يصح</label>
+        <label><input type="radio" name="q5"> يصح إذا نوى أثناء النهار</label>
+        <label><input type="radio" name="q5"> يصح في أي وقت</label>
+    </div>
+
+</div>
+
 </body>
 </html>
