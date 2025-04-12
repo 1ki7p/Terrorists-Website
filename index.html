@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
     <style>
-        /* أساسية الموقع */
+        /* إعدادات أساسية */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -30,11 +30,11 @@
             height: 80%;
             overflow: hidden;
         }
+
         h1 {
             font-size: 36px;
             margin-bottom: 30px;
             color: #ecf0f1;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
         .question {
             font-size: 26px;
@@ -49,7 +49,7 @@
             border-radius: 8px;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.2s ease;
             width: 100%;
             box-sizing: border-box;
         }
@@ -57,7 +57,7 @@
             background-color: #2980b9;
             transform: scale(1.05);
         }
-        /* قائمة جانبية */
+        /* شريط القائمة الجانبية */
         .side-menu {
             position: fixed;
             top: 0;
@@ -84,8 +84,7 @@
         .side-menu a:hover {
             background-color: #2980b9;
         }
-
-        /* تأثير التحولات على الأسئلة */
+        /* تأثير التحولات بين الأسئلة */
         .question-container {
             display: none;
             opacity: 0;
