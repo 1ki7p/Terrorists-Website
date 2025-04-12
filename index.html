@@ -8,134 +8,135 @@
         /* تصميم عام للموقع */
         body {
             font-family: 'Amiri', serif;
-            background-color: #f4f6f9;
-            color: #333;
             margin: 0;
             padding: 0;
+            background: #2c3e50;
+            color: #ecf0f1;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
         }
         .container {
+            background-color: #34495e;
+            border-radius: 20px;
+            padding: 30px;
             width: 100%;
-            max-width: 1000px;
-            margin: 30px;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            max-width: 800px;
             text-align: center;
-            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            color: #ecf0f1;
             height: 90%;
+            overflow-y: auto;
+            position: relative;
         }
         h1 {
             font-size: 36px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
-
-        /* تصميم زر القائمة الجانبية */
         .menu-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 30px;
-            cursor: pointer;
-            color: #2c3e50;
-            background: transparent;
+            font-size: 35px;
+            color: #ecf0f1;
+            background-color: transparent;
             border: none;
+            cursor: pointer;
+            z-index: 10;
         }
 
         /* تصميم القائمة الجانبية */
         .side-menu {
             position: fixed;
             top: 0;
-            left: 0;
-            background-color: #2c3e50;
+            left: -250px;
             width: 250px;
             height: 100%;
-            display: none;
-            flex-direction: column;
-            padding: 30px;
-            z-index: 100;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
+            background-color: #2c3e50;
+            padding: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
         .side-menu a {
-            text-decoration: none;
-            color: white;
+            color: #ecf0f1;
             font-size: 22px;
-            padding: 15px;
+            text-decoration: none;
+            margin: 20px 0;
+            display: block;
+            padding: 12px 0;
             text-align: center;
             border-bottom: 1px solid #7f8c8d;
+            border-radius: 5px;
             transition: background 0.3s ease;
         }
         .side-menu a:hover {
             background-color: #3498db;
         }
 
-        /* تصميم الأسئلة والاختيارات */
-        .question {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+        /* إعدادات الأزرار */
         .choices button {
-            padding: 15px;
-            font-size: 18px;
             background-color: #3498db;
-            color: white;
+            padding: 15px;
+            margin: 15px;
+            font-size: 18px;
             border: none;
             border-radius: 8px;
+            color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin: 10px 0;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
         .choices button:hover {
             background-color: #2980b9;
             transform: scale(1.05);
         }
 
-        .result {
-            margin-top: 30px;
-            font-size: 22px;
-            padding: 15px;
-            color: #27ae60;
-            background-color: #ecf8f4;
-            border-radius: 8px;
-        }
-        .error {
-            margin-top: 30px;
-            font-size: 22px;
-            padding: 15px;
-            color: #e74c3c;
-            background-color: #f8d7da;
-            border-radius: 8px;
+        .question {
+            font-size: 26px;
+            margin-bottom: 20px;
         }
 
-        .end {
+        /* تصميم النتيجة */
+        .result, .error {
+            font-size: 24px;
             margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
         }
-        .end button {
-            padding: 15px;
-            background-color: #2ecc71;
-            border: none;
+
+        .result {
+            background-color: #27ae60;
             color: white;
-            border-radius: 8px;
+        }
+        .error {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* تصميم زر "إعادة الاختبار" */
+        .end button {
+            padding: 15px 25px;
+            background-color: #2ecc71;
             font-size: 18px;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
+            border: none;
             transition: background-color 0.3s ease;
         }
         .end button:hover {
             background-color: #27ae60;
         }
+
     </style>
 </head>
 <body>
-
     <!-- زر القائمة الجانبية -->
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
@@ -163,79 +164,24 @@
             aqeeda: [
                 { question: "ما هو تعريف التوحيد؟", choices: ["عبادة الله وحده", "أن الله هو الخالق فقط", "توحيد العبادة فقط"], answer: "عبادة الله وحده" },
                 { question: "ما هو الكفر؟", choices: ["عدم الإيمان بالله", "إنكار وجود الله", "الإيمان بالله مع الشرك"], answer: "إنكار وجود الله" },
-                { question: "من هو الذي أسس مذهب السلف؟", choices: ["الإمام مالك", "الإمام أحمد بن حنبل", "الإمام الشافعي"], answer: "الإمام أحمد بن حنبل" }
+                { question: "من هو الذي أسس مذهب السلف؟", choices: ["الإمام مالك", "الإمام أحمد بن حنبل", "الإمام الشافعي"], answer: "الإمام أحمد بن حنبل" },
+                { question: "ما هي حقيقة الإيمان؟", choices: ["القول باللسان", "العمل بالجوارح", "القول والاعتقاد والعمل"], answer: "القول والاعتقاد والعمل" },
+                { question: "من هو أول من أظهر التوحيد في مكة؟", choices: ["النبي محمد صلى الله عليه وسلم", "علي بن أبي طالب", "أبو بكر الصديق"], answer: "النبي محمد صلى الله عليه وسلم" }
             ],
             fiqh: [
                 { question: "ما هي الصلاة التي لا تصح إلا بالوضوء؟", choices: ["الظهر", "الفجر", "العشاء"], answer: "الفجر" },
                 { question: "ما هي الزكاة؟", choices: ["صدقة تطوعية", "فرض على المال", "هدية للفقراء"], answer: "فرض على المال" },
-                { question: "كم عدد الركعات في صلاة التراويح؟", choices: ["10", "12", "20"], answer: "20" }
+                { question: "كم عدد الركعات في صلاة التراويح؟", choices: ["10", "12", "20"], answer: "20" },
+                { question: "ما هي صفة الوضوء؟", choices: ["غسل الأيدي والوجه فقط", "غسل الأعضاء مع المسح على الرأس", "غسل الأعضاء مع التسمية"], answer: "غسل الأعضاء مع المسح على الرأس" },
+                { question: "هل يجوز قضاء الصلاة الفائتة جماعة؟", choices: ["نعم", "لا", "فقط في بعض الحالات"], answer: "لا" }
             ],
             hadith: [
                 { question: "من هو الصحابي الذي قال: 'من غشنا فليس منا'؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "النبي محمد صلى الله عليه وسلم"], answer: "النبي محمد صلى الله عليه وسلم" },
                 { question: "ما هي شروط قبول الحديث؟", choices: ["العدالة في الراوي", "التواتر", "الاعتراف بالمصدر"], answer: "العدالة في الراوي" },
-                { question: "ما هي أشهر كتب الحديث؟", choices: ["البخاري ومسلم", "الطبقات الكبرى", "السنن الكبرى"], answer: "البخاري ومسلم" }
+                { question: "ما هي أشهر كتب الحديث؟", choices: ["البخاري ومسلم", "الطبقات الكبرى", "السنن الكبرى"], answer: "البخاري ومسلم" },
+                { question: "من هو الذي جمع السنن الكبرى؟", choices: ["أبو داود", "الترمذي", "النسائي"], answer: "النسائي" }
             ],
             history: [
                 { question: "من هو القائد الذي فتح الأندلس؟", choices: ["طارق بن زياد", "صلاح الدين", "المعتمد بن عباد"], answer: "طارق بن زياد" },
                 { question: "متى وقعت معركة بدر؟", choices: ["2 هـ", "3 هـ", "4 هـ"], answer: "2 هـ" },
-                { question: "من هو الخليفة الذي أمر بتدوين الحديث؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان"], answer: "عثمان بن عفان" }
-            ]
-        };
-
-        function toggleMenu() {
-            const sideMenu = document.getElementById('sideMenu');
-            sideMenu.style.display = (sideMenu.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        function loadQuiz(type) {
-            currentQuizType = type;
-            currentQuestionIndex = 0;
-            score = 0;
-            showQuestion();
-            toggleMenu();
-        }
-
-        function showQuestion() {
-            const quiz = quizzes[currentQuizType];
-            if (currentQuestionIndex < quiz.length) {
-                const questionData = quiz[currentQuestionIndex];
-                const questionHTML = `
-                    <div class="question">
-                        ${questionData.question}
-                    </div>
-                    <div class="choices">
-                        ${questionData.choices.map(choice => 
-                            `<button onclick="checkAnswer('${choice}')">${choice}</button>`
-                        ).join('')}
-                    </div>
-                `;
-                document.getElementById("quiz").innerHTML = questionHTML;
-            } else {
-                showResult();
-            }
-        }
-
-        function checkAnswer(answer) {
-            const quiz = quizzes[currentQuizType];
-            if (answer === quiz[currentQuestionIndex].answer) {
-                score++;
-                document.getElementById("result").innerHTML = "<p class='result'>إجابة صحيحة!<br>النتيجة: " + score + "/" + quizzes[currentQuizType].length + "</p>";
-            } else {
-                document.getElementById("result").innerHTML = "<p class='error'>إجابة خاطئة!<br>النتيجة: " + score + "/" + quizzes[currentQuizType].length + "</p>";
-            }
-            currentQuestionIndex++;
-            setTimeout(showQuestion, 1000);
-        }
-
-        function showResult() {
-            const resultHTML = `
-                <div class="end">
-                    <p>انتهت الاختبار! النتيجة النهائية: ${score} من ${quizzes[currentQuizType].length}</p>
-                    <button onclick="loadQuiz(currentQuizType)">إعادة الاختبار</button>
-                </div>
-            `;
-            document.getElementById("quiz").innerHTML = resultHTML;
-        }
-    </script>
-</body>
-</html>
+                { question: "من هو الخليفة الذي أمر بتدوين الحديث؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن
