@@ -11,8 +11,8 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #ecf0f1;
-            color: #2c3e50;
+            background-color: #f8f9fa;
+            color: #212529;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,9 +23,9 @@
             width: 100%;
             max-width: 900px;
             padding: 30px;
-            background-color: #34495e;
-            border-radius: 20px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
             text-align: center;
             position: relative;
             height: 80%;
@@ -34,19 +34,19 @@
             flex-direction: column;
             align-items: center;
         }
-
         h1 {
             font-size: 36px;
-            color: #fff;
+            color: #333;
             margin-bottom: 30px;
+            text-transform: uppercase;
         }
         .question {
-            font-size: 26px;
+            font-size: 24px;
             margin-bottom: 20px;
-            color: #ecf0f1;
+            color: #333;
         }
         .choices button {
-            background-color: #3498db;
+            background-color: #007bff;
             padding: 15px;
             margin: 10px;
             font-size: 18px;
@@ -59,37 +59,48 @@
             box-sizing: border-box;
         }
         .choices button:hover {
-            background-color: #2980b9;
+            background-color: #0056b3;
             transform: scale(1.05);
         }
-        /* شريط القائمة الجانبية */
         .side-menu {
             position: fixed;
             top: 0;
             left: -250px;
             width: 250px;
             height: 100%;
-            background-color: #2c3e50;
+            background-color: #343a40;
             padding: 20px;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
         .side-menu a {
-            color: #ecf0f1;
+            color: #fff;
             font-size: 22px;
             text-decoration: none;
             margin: 20px 0;
             display: block;
             padding: 12px 0;
             text-align: center;
-            border-bottom: 1px solid #7f8c8d;
+            border-bottom: 1px solid #ccc;
             border-radius: 5px;
             transition: background 0.3s ease;
         }
         .side-menu a:hover {
-            background-color: #2980b9;
+            background-color: #007bff;
         }
-        /* التأثيرات بين الأسئلة */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 9999;
+        }
         .question-container {
             display: none;
             opacity: 0;
@@ -99,27 +110,19 @@
             display: block;
             opacity: 1;
         }
-        /* الزر العلوي */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 30px;
-            background: #2c3e50;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 9999;
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .button-container {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- زر القائمة الجانبية -->
+
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-    <!-- قائمة جانبية -->
     <div class="side-menu" id="sideMenu">
         <a href="#" onclick="startQuiz('aqeeda')">اختبار العقيدة</a>
         <a href="#" onclick="startQuiz('fiqh')">اختبار الفقه</a>
@@ -127,7 +130,6 @@
         <a href="#" onclick="startQuiz('history')">اختبار التاريخ</a>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="container">
         <h1>اختبار المناصرين</h1>
         <div id="quizContainer"></div>
@@ -177,7 +179,7 @@
             const quiz = quizzes[currentQuizType];
             const questionContainer = document.getElementById('quizContainer');
             questionContainer.innerHTML = ''; // تنظيف المحتوى الحالي
-            
+
             if (currentQuestionIndex < quiz.length) {
                 const questionData = quiz[currentQuestionIndex];
                 const questionElement = document.createElement('div');
@@ -217,4 +219,6 @@
             resultContainer.innerHTML = `
                 <p>تم الانتهاء من الاختبار</p>
                 <p>نتيجتك: ${score}/${quizzes[currentQuizType].length}</p>
-                <button onclick="startQuiz(currentQuizType)">إ
+                <button onclick="startQuiz(currentQuizType)">إعادة الاختبار</button>
+            `;
+            document.getElementById('quizContainer').appendChild(resultContainer
