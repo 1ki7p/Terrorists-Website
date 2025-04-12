@@ -5,42 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اختبار المناصرين</title>
     <style>
+        /* التصميم العام للموقع */
         body {
             font-family: 'Amiri', serif;
-            background-color: #f4f4f9;
+            background-color: #f1f2f6;
             color: #333;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             overflow: hidden;
         }
         .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px;
             background-color: #ffffff;
-            width: 80%;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
             text-align: center;
+            overflow-y: auto;
+            height: 90%;
         }
         h1 {
-            color: #2c3e50;
             font-size: 36px;
+            color: #2c3e50;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
         }
+        /* إعدادات الزر الخاص بالقائمة */
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #3498db;
+            background: transparent;
+            border: none;
+        }
+        /* إعدادات القائمة الجانبية */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: #2c3e50;
+            width: 250px;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            padding: 30px;
+            z-index: 100;
+            box-shadow: -5px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+        .side-menu a {
+            text-decoration: none;
+            color: white;
+            font-size: 20px;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 1px solid #7f8c8d;
+            transition: background 0.3s ease;
+        }
+        .side-menu a:hover {
+            background-color: #3498db;
+        }
+        /* الأسئلة والتصميم العام */
         .question {
-            margin-bottom: 20px;
             font-size: 24px;
             font-weight: bold;
-        }
-        .choices {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            margin-bottom: 20px;
         }
         .choices button {
             padding: 15px;
@@ -51,23 +89,24 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 10px 0;
         }
         .choices button:hover {
             background-color: #2980b9;
             transform: scale(1.05);
         }
         .result {
+            margin-top: 30px;
             font-size: 22px;
             padding: 15px;
-            margin-top: 20px;
             color: #27ae60;
             background-color: #ecf8f4;
             border-radius: 8px;
         }
         .error {
+            margin-top: 30px;
             font-size: 22px;
             padding: 15px;
-            margin-top: 20px;
             color: #e74c3c;
             background-color: #f8d7da;
             border-radius: 8px;
@@ -76,7 +115,7 @@
             margin-top: 30px;
         }
         .end button {
-            padding: 10px 20px;
+            padding: 15px;
             background-color: #2ecc71;
             border: none;
             color: white;
@@ -91,80 +130,74 @@
     </style>
 </head>
 <body>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- القائمة الجانبية -->
+    <div class="side-menu" id="sideMenu">
+        <a href="#" onclick="loadQuiz('aqeeda')">اختبار العقيدة</a>
+        <a href="#" onclick="loadQuiz('fiqh')">اختبار الفقه</a>
+        <a href="#" onclick="loadQuiz('hadith')">اختبار الحديث</a>
+        <a href="#" onclick="loadQuiz('history')">اختبار التاريخ الإسلامي</a>
+    </div>
+
     <div class="container">
         <h1>اختبار المناصرين</h1>
-        <div id="quiz">
-            <!-- الأسئلة سيتم إضافتها هنا -->
-        </div>
+        <div id="quiz"></div>
         <div id="result"></div>
     </div>
 
     <script>
-        const questions = [
-            {
-                question: "ما هو اسم نبي الله الذي ركب الفلك مع قومه؟",
-                choices: ["إبراهيم", "نوح", "موسى"],
-                answer: "نوح"
-            },
-            {
-                question: "من هو الصحابي الذي لقب بأسد الله؟",
-                choices: ["عمر بن الخطاب", "علي بن أبي طالب", "خالد بن الوليد"],
-                answer: "خالد بن الوليد"
-            },
-            {
-                question: "أين حدثت معركة بدر؟",
-                choices: ["مكة", "المدينة", "أحد"],
-                answer: "مكة"
-            },
-            {
-                question: "ما هو اسم الكتاب الذي أنزل على النبي محمد صلى الله عليه وسلم؟",
-                choices: ["التوراة", "الإنجيل", "القرآن"],
-                answer: "القرآن"
-            },
-            {
-                question: "كم كان عدد المسلمين في غزوة بدر؟",
-                choices: ["300", "1000", "313"],
-                answer: "313"
-            },
-            {
-                question: "من هو أول خليفة للمسلمين؟",
-                choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان"],
-                answer: "أبو بكر الصديق"
-            },
-            {
-                question: "ما هو اسم النبي الذي ابتلعه الحوت؟",
-                choices: ["إبراهيم", "يونس", "موسى"],
-                answer: "يونس"
-            },
-            {
-                question: "كم عدد السور في القرآن الكريم؟",
-                choices: ["100", "114", "120"],
-                answer: "114"
-            },
-            {
-                question: "من هو الذي قتل الصحابي عمرو بن الجموح؟",
-                choices: ["أبو جهل", "عبد الله بن مسعود", "أبو الحسن علي بن أبي طالب"],
-                answer: "أبو جهل"
-            },
-            {
-                question: "ما هي أول مدينة هاجر إليها النبي صلى الله عليه وسلم؟",
-                choices: ["المدينة المنورة", "مكة", "الطائف"],
-                answer: "المدينة المنورة"
-            }
-        ];
-
         let currentQuestionIndex = 0;
         let score = 0;
+        let currentQuizType = '';
+
+        const quizzes = {
+            aqeeda: [
+                { question: "ما هو تعريف التوحيد؟", choices: ["عبادة الله وحده", "أن الله هو الخالق فقط", "توحيد العبادة فقط"], answer: "عبادة الله وحده" },
+                { question: "ما هو الكفر؟", choices: ["عدم الإيمان بالله", "إنكار وجود الله", "الإيمان بالله مع الشرك"], answer: "إنكار وجود الله" },
+                { question: "من هو الذي أسس مذهب السلف؟", choices: ["الإمام مالك", "الإمام أحمد بن حنبل", "الإمام الشافعي"], answer: "الإمام أحمد بن حنبل" }
+            ],
+            fiqh: [
+                { question: "ما هي الصلاة التي لا تصح إلا بالوضوء؟", choices: ["الظهر", "الفجر", "العشاء"], answer: "الفجر" },
+                { question: "ما هي الزكاة؟", choices: ["صدقة تطوعية", "فرض على المال", "هدية للفقراء"], answer: "فرض على المال" },
+                { question: "كم عدد الركعات في صلاة التراويح؟", choices: ["10", "12", "20"], answer: "20" }
+            ],
+            hadith: [
+                { question: "من هو الصحابي الذي قال: 'من غشنا فليس منا'؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "النبي محمد صلى الله عليه وسلم"], answer: "النبي محمد صلى الله عليه وسلم" },
+                { question: "ما هي شروط قبول الحديث؟", choices: ["العدالة في الراوي", "التواتر", "الاعتراف بالمصدر"], answer: "العدالة في الراوي" },
+                { question: "ما هي أشهر كتب الحديث؟", choices: ["البخاري ومسلم", "الطبقات الكبرى", "السنن الكبرى"], answer: "البخاري ومسلم" }
+            ],
+            history: [
+                { question: "من هو القائد الذي فتح الأندلس؟", choices: ["طارق بن زياد", "صلاح الدين", "المعتمد بن عباد"], answer: "طارق بن زياد" },
+                { question: "متى وقعت معركة بدر؟", choices: ["2 هـ", "3 هـ", "4 هـ"], answer: "2 هـ" },
+                { question: "من هو الخليفة الذي أمر بتدوين الحديث؟", choices: ["أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان"], answer: "عثمان بن عفان" }
+            ]
+        };
+
+        function toggleMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            sideMenu.style.display = (sideMenu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function loadQuiz(type) {
+            currentQuizType = type;
+            currentQuestionIndex = 0;
+            score = 0;
+            showQuestion();
+            toggleMenu();
+        }
 
         function showQuestion() {
-            if (currentQuestionIndex < questions.length) {
-                let question = questions[currentQuestionIndex];
-                let questionHTML = `
+            const quiz = quizzes[currentQuizType];
+            if (currentQuestionIndex < quiz.length) {
+                const questionData = quiz[currentQuestionIndex];
+                const questionHTML = `
                     <div class="question">
-                        <p>${question.question}</p>
+                        ${questionData.question}
                     </div>
                     <div class="choices">
-                        ${question.choices.map((choice, index) => 
+                        ${questionData.choices.map(choice => 
                             `<button onclick="checkAnswer('${choice}')">${choice}</button>`
                         ).join('')}
                     </div>
@@ -176,34 +209,9 @@
         }
 
         function checkAnswer(answer) {
-            if (answer === questions[currentQuestionIndex].answer) {
+            const quiz = quizzes[currentQuizType];
+            if (answer === quiz[currentQuestionIndex].answer) {
                 score++;
-                document.getElementById("result").innerHTML = "<p class='result'>إجابة صحيحة!<br>النتيجة: " + score + "/" + questions.length + "</p>";
+                document.getElementById("result").innerHTML = "<p class='result'>إجابة صحيحة!<br>النتيجة: " + score + "/" + quizzes[currentQuizType].length + "</p>";
             } else {
-                document.getElementById("result").innerHTML = "<p class='error'>إجابة خاطئة!<br>النتيجة: " + score + "/" + questions.length + "</p>";
-            }
-            currentQuestionIndex++;
-            setTimeout(showQuestion, 1000);  // التبديل للسؤال التالي بعد ثانية
-        }
-
-        function showResult() {
-            let resultHTML = `
-                <div class="end">
-                    <h2>لقد انتهيت من الاختبار!</h2>
-                    <p>نتيجتك: ${score} من ${questions.length}</p>
-                    <button onclick="resetQuiz()">إعادة الاختبار</button>
-                </div>
-            `;
-            document.getElementById("quiz").innerHTML = resultHTML;
-        }
-
-        function resetQuiz() {
-            score = 0;
-            currentQuestionIndex = 0;
-            showQuestion();
-        }
-
-        showQuestion();
-    </script>
-</body>
-</html>
+                document.getElementById("result").innerHTML = "<p class='error'>إجابة خاطئة!<br>النتيجة: " + score + "/" + quizzes[currentQuizType].length +
